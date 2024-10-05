@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  
+  user_api:
+    build:
+      context: ./APIS
+    ports:
+      - "3001:3000"
+     

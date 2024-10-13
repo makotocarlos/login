@@ -2,9 +2,36 @@ version: "3.8"
 
 services:
   
-  user_api:
+  webserver:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - login_api
+    networks:
+      - dev_network
+
+  login_api:
     build:
       context: ./APIS
     ports:
-      - "3001:3000"
-     
+      - "3000:3000"  
+    volumes:
+      - ./APIS/login:/usr/loginAPI
+    networks:
+      - dev_network
+
+  db_dev:
+    image: postgres:latest
+    ports:
+      - "5433:5432"  
+    environment:
+      - POSTGRES_PASSWORD=12345
+    volumes:
+      - ./login_data_dev:/var/lib/postgresql/data
+    networks:
+      - dev_network
+
+networks:
+  dev_network:
+    driver: bridge

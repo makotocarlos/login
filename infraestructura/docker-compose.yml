@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  
+
   webserver:
     build: ./nginx
     ports:
@@ -23,12 +23,34 @@ services:
 
   db_dev:
     image: postgres:latest
+    container_name: user_db_dev
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 1GB
+        reservations:
+          cpus: "0.1"
+          memory: 1GB
     ports:
-      - "5433:5432"  
+      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=12345
     volumes:
       - ./login_data_dev:/var/lib/postgresql/data
+    networks:
+      - dev_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "carlos@guerrero.com"
+      PGADMIN_DEFAULT_PASSWORD: "12345"
+    ports:
+      - "8888:80"
+    depends_on:
+      - db_dev
     networks:
       - dev_network
 

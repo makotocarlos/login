@@ -35,7 +35,9 @@ services:
     ports:
       - "5432:5432"
     environment:
+      - POSTGRES_USER=user   # Nombre del usuario
       - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=login_db # Nombre de la base de datos
     volumes:
       - ./login_data_dev:/var/lib/postgresql/data
     networks:

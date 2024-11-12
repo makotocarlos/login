@@ -1,0 +1,8 @@
+FROM postgres:latest
+
+RUN apt-get update && \
+    apt-get install -y postgresql-contrib postgresql-server-dev-all postgresql-15-pgaudit && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY ./postgresql_configs/postgresql.conf /etc/postgresql/postgresql.conf
+COPY ./postgresql_configs/pg_hba.conf /etc/postgresql/pg_hba.conf
